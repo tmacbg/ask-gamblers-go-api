@@ -12,6 +12,22 @@ type Item struct {
 	Name string `json:"name"`
 }
 
+func (feed *Feed) GetCountries() []Item {
+	items := []Item{}
+
+	rows, _ := feed.DB.Query("SELECT name from countries")
+	var country string
+	for rows.Next() {
+		rows.Scan(&country)
+		item := Item{
+			Name: country,
+		}
+		items = append(items, item)
+	}
+
+	return items
+}
+
 func (feed *Feed) Get(query string) []Item {
 	items := []Item{}
 	stm, _ := feed.DB.Prepare(`SELECT DISTINCT(w.name) from websites as w 
