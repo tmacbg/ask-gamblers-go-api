@@ -27,29 +27,22 @@ type HomeData struct {
 }
 
 func getAvailableCasinos(allCasinos []data.Item, filteredCasinos []data.Item) []data.Item {
-	start := filteredCasinos
-	end := allCasinos
-	if len(allCasinos) < len(filteredCasinos) {
-		start = allCasinos
-		end = filteredCasinos
-	}
-	for i := 0; i < len(start); {
+
+	for i := 0; i < len(allCasinos); {
 		exist := false
-		for _, b := range end {
-			if b.Name == end[i].Name {
+		for _, b := range filteredCasinos {
+			if b.Name == allCasinos[i].Name {
 				exist = true
-				fmt.Printf("[%v], - %v\n", b.Name, end[i].Name)
-				start = append(end[:i], end[i+1:]...)
 				break
 			}
 		}
-		if !exist {
-			fmt.Print("Searching")
+		if exist {
+			allCasinos = append(allCasinos[:i], allCasinos[i+1:]...)
 		} else {
 			i++
 		}
 	}
-	return start
+	return allCasinos
 }
 
 func main() {
