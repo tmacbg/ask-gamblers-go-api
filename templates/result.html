@@ -23,24 +23,27 @@
 
     <div class="container">
         <div class="row">
-            <div class="col">
-                <h4>Select Country </h4>
-                <form method="POST" action="/api/data">
-                    <div class="input-group">
-                        <select class="custom-select" id="inputGroupSelect04"
-                            aria-label="Example select with button addon" name="country">
-                            <option selected>Choose Country...</option>
-                            {{range .Countries}}
-                            <option value="{{.Name}}">{{.Name}}</option>
-                            {{end}}
-                        </select>
-
-                        <div class="input-group-append">
-                            <button class="btn btn-outline-secondary" type="submit">Go!</button>
-                        </div>
+                <div class="col">
+                        <h4>Select Country </h4>
+                        <form method="POST" action="/api/data">
+                            <div class="input-group">
+                                <select class="custom-select" id="inputGroupSelect04"
+                                    aria-label="Example select with button addon" name="country">
+                                    <option selected>Choose Country...</option>
+                                    {{range .Countries}}
+                                    <option value="{{.Name}}">{{.Name}}</option>
+                                    {{end}}
+                                </select>
+        
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="submit">Go!</button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
-                </form>
-            </div>
+        </div>
+        <hr/>
+        <div class="row">
             <div class="col">
                 <strong><span class="badge badge-danger">NOT available</span> in {{.Query}}</strong>: <span
                     class="badge badge-danger">{{.Count}}</span>
@@ -54,9 +57,9 @@
             </div>
             <div class="col">
                 <strong><span class="badge badge-success">available</span> in {{.Query}}</strong>: <span
-                    class="badge badge-success">{{.Count}}</span>
+                    class="badge badge-success">{{.CountAvailableCasinos}}</span>
                 <ul class="list-group list-group-flush">
-                    {{range .Websites}}
+                    {{range .AvailableCasinos}}
                     <li class="list-group-item">
                         <a href="{{.Name}}" target="_blank">{{.Name}}</a>
                     </li>

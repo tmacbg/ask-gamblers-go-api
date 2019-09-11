@@ -11,17 +11,45 @@ import (
 )
 
 type ResponseObject struct {
-	Websites  []data.Item `json:"websites"`
-	Count     int         `json:"count"`
-	Country   string      `json:"country"`
-	PageTitle string      `json:"page_title"`
-	Countries []data.Item `json:"countries"`
-	Query     string      `json:"query"`
+	Websites              []data.Item `json:"websites"`
+	Count                 int         `json:"count"`
+	Country               string      `json:"country"`
+	PageTitle             string      `json:"page_title"`
+	Countries             []data.Item `json:"countries"`
+	Query                 string      `json:"query"`
+	AvailableCasinos      []data.Item `json:"available_casinos"`
+	CountAvailableCasinos int         `json:"count_available_casinos"`
 }
 
 type HomeData struct {
 	Countries []data.Item `json:"countries"`
 	PageTitle string      `json:"page_title"`
+}
+
+func getAvailableCasinos(allCasinos []data.Item, filteredCasinos []data.Item) []data.Item {
+	start := filteredCasinos
+	end := allCasinos
+	if len(allCasinos) < len(filteredCasinos) {
+		start = allCasinos
+		end = filteredCasinos
+	}
+	for i := 0; i < len(start); {
+		exist := false
+		for _, b := range end {
+			if b.Name == end[i].Name {
+				exist = true
+				fmt.Printf("[%v], - %v\n", b.Name, end[i].Name)
+				start = append(end[:i], end[i+1:]...)
+				break
+			}
+		}
+		if !exist {
+			fmt.Print("Searching")
+		} else {
+			i++
+		}
+	}
+	return start
 }
 
 func main() {
@@ -46,21 +74,21 @@ func main() {
 
 		items := connection.Get(r.PostForm["country"][0])
 		countries := connection.GetCountries()
+		allCasinos := connection.GetCasinos()
 
+		availableCasinos := getAvailableCasinos(allCasinos, items)
 		responseData := ResponseObject{
-			Websites:  items,
-			Count:     len(items),
-			Country:   r.PostForm["country"][0],
-			PageTitle: "Results",
-			Countries: countries,
-			Query:     r.PostForm["country"][0],
+			Websites:              items,
+			Count:                 len(items),
+			Country:               r.PostForm["country"][0],
+			PageTitle:             "Results",
+			Countries:             countries,
+			Query:                 r.PostForm["country"][0],
+			AvailableCasinos:      availableCasinos,
+			CountAvailableCasinos: len(availableCasinos),
 		}
 
-		//response, _ := json.Marshal(responseData)
-
-		//w.Header().Set("Content-Type", "application/json")
 		resultTemplate.Execute(w, responseData)
-		//w.Write(response)
 	})
 
 	fmt.Println("Ask Gamblers Interface started !")

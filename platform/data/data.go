@@ -28,6 +28,22 @@ func (feed *Feed) GetCountries() []Item {
 	return items
 }
 
+func (feed *Feed) GetCasinos() []Item {
+	allCasinos := []Item{}
+	rows, _ := feed.DB.Query("Select DISTINCT(name) from websites")
+	var casino string
+	for rows.Next() {
+		rows.Scan(&casino)
+		casinoItem := Item{
+			Name: casino,
+		}
+
+		allCasinos = append(allCasinos, casinoItem)
+	}
+
+	return allCasinos
+}
+
 func (feed *Feed) Get(query string) []Item {
 	items := []Item{}
 	stm, _ := feed.DB.Prepare(`SELECT DISTINCT(w.name) from websites as w 
