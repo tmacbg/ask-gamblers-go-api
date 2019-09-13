@@ -1,17 +1,4 @@
-<!doctype html>
-<html lang="en">
-
-<head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
-    <title>{{.PageTitle}}</title>
-</head>
+{{template "header"}}
 
 <body>
 
@@ -20,32 +7,34 @@
             <img src="https://www.igaming.com/images/logo.svg" class="d-inline-block align-top" alt="">
         </a>
     </nav>
+
     <div class="container">
         <div class="row">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3>Select Country to get the list of <strong>unavailable</strong> casinos </h3>
-                </div>
-                <div class="panel-body">
-
-                    <form method="POST" action="/api/data">
-                        <div class="input-group">
-
-                            <select class="custom-select" id="inputGroupSelect" aria-label="Country Select"
-                                name="country">
-                                <option selected>Choose Country...</option>
-                                {{range .Countries}}
-                                <option value="{{.Name}}">{{.Name}}</option>
-                                {{end}}
-                            </select>
-
-                            <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" type="submit">Go!</button>
-                            </div>
-                        </div>
-                    </form>
+            <div class="col">
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top"
+                        src="https://cdn2.iconfinder.com/data/icons/office-and-business-round-set-2/64/53-512.png"
+                        alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">Search by Country</h5>
+                        <p class="card-text">Seatch witch casinos are available in a specific country.</p>
+                        <a href="/search" class="btn btn-primary">Search</a>
+                    </div>
                 </div>
             </div>
+            <div class="col">
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top"
+                        src="https://cdn0.iconfinder.com/data/icons/smashicons-casino-gambling-flat-vol-1/58/11_-_Add_Poker_Chips-_gamble_casino_play_card-512.png"
+                        alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">Add Casino</h5>
+                        <p class="card-text">Add new casino data in the database.</p>
+                        <a href="/add" class="btn btn-primary">Add</a>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 

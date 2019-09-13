@@ -1,17 +1,4 @@
-<!doctype html>
-<html lang="en">
-
-<head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
-    <title>{{.PageTitle}}</title>
-</head>
+{{template "header"}}
 
 <body>
     <nav class="navbar navbar-light bg-light">
@@ -23,26 +10,26 @@
 
     <div class="container">
         <div class="row">
-                <div class="col">
-                        <h4>Select Country </h4>
-                        <form method="POST" action="/api/data">
-                            <div class="input-group">
-                                <select class="custom-select" id="inputGroupSelect04"
-                                    aria-label="Example select with button addon" name="country">
-                                    <option selected>Choose Country...</option>
-                                    {{range .Countries}}
-                                    <option value="{{.Name}}">{{.Name}}</option>
-                                    {{end}}
-                                </select>
-        
-                                <div class="input-group-append">
-                                    <button class="btn btn-outline-secondary" type="submit">Go!</button>
-                                </div>
-                            </div>
-                        </form>
+            <div class="col">
+                <h4>Select Country </h4>
+                <form method="POST" action="/api/data">
+                    <div class="input-group">
+                        <select class="custom-select" id="inputGroupSelect04"
+                            aria-label="Example select with button addon" name="country">
+                            <option selected>Choose Country...</option>
+                            {{range .Countries}}
+                            <option value="{{.Name}}">{{.Name}}</option>
+                            {{end}}
+                        </select>
+
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="submit">Go!</button>
+                        </div>
                     </div>
+                </form>
+            </div>
         </div>
-        <hr/>
+        <hr />
         <div class="row">
             <div class="col">
                 <strong><span class="badge badge-danger">NOT available</span> in {{.Query}}</strong>: <span

@@ -50,16 +50,27 @@ func main() {
 	db, _ := sql.Open("sqlite3", "./database/askGamblers.db")
 
 	connection := data.NewConnection(db)
-	resultTemplate := template.Must(template.ParseFiles("./templates/result.html"))
-	homeTemplate := template.Must(template.ParseFiles("./templates/home.html"))
+	resultTemplate := template.Must(template.ParseFiles("./templates/result.html", "./templates/partials/header.html"))
+	homeTemplate := template.Must(template.ParseFiles("./templates/home.html", "./templates/partials/header.html"))
+	searchTemplate := template.Must(template.ParseFiles("./templates/search.html", "./templates/partials/header.html"))
+
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		responseData := HomeData{
+			Countries: nil,
+			PageTitle: "Casino tool",
+		}
+
+		homeTemplate.Execute(w, responseData)
+	})
+
+	http.HandleFunc("/search", func(w http.ResponseWriter, r *http.Request) {
 		countries := connection.GetCountries()
 
 		responseData := HomeData{
 			Countries: countries,
 			PageTitle: "Casino Country",
 		}
-		homeTemplate.Execute(w, responseData)
+		searchTemplate.Execute(w, responseData)
 	})
 
 	http.HandleFunc("/api/data", func(w http.ResponseWriter, r *http.Request) {
