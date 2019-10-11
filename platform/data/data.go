@@ -2,6 +2,7 @@ package data
 
 import (
 	"database/sql"
+	"fmt"
 )
 
 type Feed struct {
@@ -56,6 +57,30 @@ func (feed *Feed) Get(query string) []Item {
 		rows.Scan(&website)
 		item := Item{
 			Name: website,
+		}
+		items = append(items, item)
+	}
+
+	return items
+}
+
+func (feed *Feed) GetBlockedCountries(query string) []Item {
+	items := []Item{}
+	stm, _ := feed.DB.Prepare(`SELECT DISTINCT(lower(c.code) ) as code from websites as w 
+								JOIN websites_countries as w_c on w_c.website_id = w.id 
+								JOIN countries as c on w_c.country_id = c.id
+								where  w.name like ?`)
+	queryString := fmt.Sprintf("%s%%", query)
+	fmt.Print(queryString)
+	rows, err := stm.Query(queryString)
+	if err != nil {
+		fmt.Print(err)
+	}
+	var countryCode string
+	for rows.Next() {
+		rows.Scan(&countryCode)
+		item := Item{
+			Name: countryCode,
 		}
 		items = append(items, item)
 	}

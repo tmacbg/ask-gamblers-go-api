@@ -3,12 +3,19 @@ package main
 import (
 	"askGamblersApi/platform/data"
 	"database/sql"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"text/template"
 
 	_ "github.com/mattn/go-sqlite3"
 )
+
+type ApiResponseObject struct {
+	CountryCodes []data.Item `json:"blocked_countries"`
+	Status       int32       `json:"status"`
+	Message      string      `json:"message"`
+}
 
 type ResponseObject struct {
 	Websites              []data.Item `json:"websites"`
@@ -93,6 +100,23 @@ func main() {
 		}
 
 		resultTemplate.Execute(w, responseData)
+	})
+
+	http.HandleFunc("/api/getBlocked", func(w http.ResponseWriter, r *http.Request) {
+		r.ParseForm()
+
+		casino := r.PostForm["casino"][0]
+		items := connection.GetBlockedCountries(casino)
+		jsonResponseObject := ApiResponseObject{
+			CountryCodes: items,
+			Status:       200,
+			Message:      "Success",
+		}
+		jsonResponse, _ := json.Marshal(jsonResponseObject)
+
+		w.Header().Set("Content-Type", "application/json")
+		w.Write(jsonResponse)
+
 	})
 
 	fmt.Println("Ask Gamblers Interface started !")
